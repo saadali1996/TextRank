@@ -14,7 +14,7 @@ WORKDIR /go/src/github.com/contentstudio/contentstudio-images-api-master
 ADD . .
 RUN apk add --no-cache git
 RUN go get github.com/gorilla/mux
-RUN go get github.com/rubenfonseca/fastimage 
+RUN go get github.com/DavidBelicza/TextRank
 # Build the go-API-template command inside the container
 RUN cd main && go build -o main 
 
