@@ -545,3 +545,40 @@ func main() {
 The below image is a representation how works the simplest text ranking algorithm. This algorithm can be replaced by an another one by inject different Algorithm interface implementation.
 
 <img src="https://i.imgur.com/RUdDfBz.jpg" />
+
+### Added server endpoint for textrank
+`docker build -t textrank-server .
+ docker run -p 8080:8080 textrank-server`
+
+ ### Using api request to get summarized sentences list based on both phrase weight and word recurrance
+ `package main
+
+  import (
+  	"fmt"
+  	"strings"
+  	"net/http"
+  	"io/ioutil"
+  )
+
+  func main() {
+
+  	url := "http://localhost:8080/getsummary"
+
+  	payload := strings.NewReader("text=Click%20the%20target%20in%20the%20lower%20left-hand%20corner%20and%20begin%20selecting%20the%20demographics%20that%20you%20want%20your%20intended%20audience%20to%20be%20filtered%20by%3A%3CSave%20your%20target%20audience%20to%20use%20on%20future%20posts%20by%20selecting%20%2BSave%20Current%20As%20Preset.%20Title%20your%20target%20audience%20sample%20and%20click%20apply%3ACoSchedule%20will%20take%20care%20of%20the%20rest.%0A")
+
+  	req, _ := http.NewRequest("POST", url, payload)
+
+  	req.Header.Add("summary", "contentstudio")
+  	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+  	req.Header.Add("Cache-Control", "no-cache")
+  	req.Header.Add("Postman-Token", "18ef6444-70df-4c97-a9fb-45b778eff747")
+
+  	res, _ := http.DefaultClient.Do(req)
+
+  	defer res.Body.Close()
+  	body, _ := ioutil.ReadAll(res.Body)
+
+  	fmt.Println(res)
+  	fmt.Println(string(body))
+
+  }`
